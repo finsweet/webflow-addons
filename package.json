@@ -1,0 +1,25 @@
+{
+  "name": "webflow-hacks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finsweet/webflow-hacks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/finsweet/webflow-hacks/issues"
+  },
+  "homepage": "https://github.com/finsweet/webflow-hacks#readme",
+  "dependencies": {
+    "@types/body-scroll-lock": "^2.6.1",
+    "body-scroll-lock": "^3.1.5",
+    "esbuild": "^0.8.53"
+  }
+}
