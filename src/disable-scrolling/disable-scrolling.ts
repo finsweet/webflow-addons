@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   clickTriggers.forEach((trigger) => handleClickTrigger(trigger));
 
   // ########## Display triggers ##########
-  let visibleStatesStore: Map<HTMLElement, boolean> = new Map();
+  const visibleStatesStore: Map<HTMLElement, boolean> = new Map();
 
   // Define MutationObserver's callback
   const callback: MutationCallback = (mutations) => {
