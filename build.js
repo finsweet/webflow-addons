@@ -6,7 +6,8 @@ const defaultSettings = {
   bundle: true,
   minify: true,
   sourcemap: false,
-  outdir: 'dist',
+  // outdir: 'dist',
+  outdir: '../../Users/alexi/OneDrive/Espai de Treball/Finsweet/Power Projects/Webflow Addons',
   target: 'es6',
 };
 
@@ -14,8 +15,9 @@ const defaultSettings = {
 buildSync({
   ...defaultSettings,
   entryPoints: [
+    'src/copy-clipboard/copy-clipboard.ts',
     'src/disable-scrolling/disable-scrolling.ts',
     'src/editor-friendly-link-blocks/editor-friendly-link-blocks.ts',
-    'src/copy-clipboard/copy-clipboard.ts',
+    'src/infinite-slider/infinite-slider.ts',
   ],
 });
