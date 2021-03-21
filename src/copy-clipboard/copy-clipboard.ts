@@ -1,6 +1,9 @@
 import ClipboardJS from 'clipboard';
 import { findTextNode } from '../utils.ts/helpers';
 
+/**
+ * Copy text to clipboard through simple custom attributes.
+ */
 document.addEventListener('DOMContentLoaded', () => {
   const copyTriggers = document.querySelectorAll('[data-copy]');
 

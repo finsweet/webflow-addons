@@ -1,6 +1,12 @@
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { isVisible } from '../utils.ts/helpers';
 
+/**
+ * Disable scrolling.
+ * Available actions:
+ * - On click: Scrolling is disabled when an element is clicked and re-enabled it after second click.
+ * - On display: Scrolling is disabled if the element is displayed and re-enabled when it's hidden.
+ */
 document.addEventListener('DOMContentLoaded', () => {
   // ########## DOM Elements ##########
   const displayTriggers = document.querySelectorAll<HTMLElement>('[data-disable-scroll="display"]');
