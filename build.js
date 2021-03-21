@@ -7,7 +7,7 @@ const defaultSettings = {
   minify: true,
   sourcemap: false,
   // outdir: 'dist',
-  outdir: '../../Users/alexi/OneDrive/Espai de Treball/Finsweet/Power Projects/Webflow Addons',
+  outdir: 'dist',
   target: 'es6',
 };
 
