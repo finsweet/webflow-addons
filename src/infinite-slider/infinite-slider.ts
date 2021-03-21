@@ -1,7 +1,12 @@
 import { cloneNode } from '../utils.ts/helpers';
 
+/**
+ * Infinite looping Webflow sliders
+ * @argument selectors OPTIONAL [data-selectors]
+ */
 document.addEventListener('DOMContentLoaded', () => {
-  const sliders = document.querySelectorAll<HTMLDivElement>('.w-slider');
+  const selectors = document.currentScript?.getAttribute('data-selectors');
+  const sliders = document.querySelectorAll<HTMLDivElement>(selectors || '.w-slider');
 
   for (const slider of sliders) {
     const mask = slider.querySelector('.w-slider-mask') as HTMLDivElement;
