@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const sliders = document.querySelectorAll<HTMLDivElement>(selectors || '.w-slider');
 
   for (const slider of sliders) {
-    const mask = slider.querySelector('.w-slider-mask') as HTMLDivElement;
-    if (mask.clientWidth === slider.clientWidth) continue;
+    const mask = slider.querySelector('.w-slider-mask');
+    if (!(mask instanceof HTMLDivElement) || mask.clientWidth === slider.clientWidth) continue;
 
     const slides = slider.getElementsByClassName('w-slide') as HTMLCollectionOf<HTMLDivElement>;
     const originalSlidesLength = slides.length;
