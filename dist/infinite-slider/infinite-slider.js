@@ -1,0 +1,1 @@
+(()=>{document.addEventListener("DOMContentLoaded",()=>{let t=document.querySelectorAll(".w-slider"),n=e=>{if(e.querySelector(".w-slider-mask").clientWidth===e.clientWidth)return;let a=e.querySelectorAll(".w-slide"),r=l=>{console.log(l)},i=new MutationObserver(r),o={subtree:!0,attributes:!0,attributeFilter:["aria-hidden"]};i.observe(e,o)};t.forEach(e=>n(e))});})();
