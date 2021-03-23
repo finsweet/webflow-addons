@@ -1,6 +1,6 @@
 import ClipboardJS from 'clipboard';
-import { findTextNode } from '../utils.ts/helpers';
-import { isFormField } from '../utils.ts/type-guards';
+import { findTextNode } from './utils.ts/helpers';
+import { isFormField } from './utils.ts/type-guards';
 
 /**
  * Copy text to clipboard through simple custom attributes.

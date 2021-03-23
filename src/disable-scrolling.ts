@@ -1,4 +1,4 @@
-import { isVisible } from '../utils.ts/helpers';
+import { isVisible } from './utils.ts/helpers';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 /**

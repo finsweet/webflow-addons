@@ -15,9 +15,9 @@ const defaultSettings = {
 buildSync({
   ...defaultSettings,
   entryPoints: [
-    'src/copy-clipboard/copy-clipboard.ts',
-    'src/disable-scrolling/disable-scrolling.ts',
-    'src/editor-friendly-link-blocks/editor-friendly-link-blocks.ts',
-    'src/infinite-sliders/infinite-sliders.ts',
+    'src/copy-clipboard.ts',
+    'src/disable-scrolling.ts',
+    'src/editor-friendly-link-blocks.ts',
+    'src/infinite-sliders.ts',
   ],
 });
