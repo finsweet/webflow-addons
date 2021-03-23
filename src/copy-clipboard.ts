@@ -28,6 +28,7 @@ export const initCopyClipboard = (): void => {
       let targetText = '';
 
       if (isFormField(target)) targetText = target.value;
+      else if (target instanceof HTMLElement) targetText = target.innerText;
       else if (target) targetText = target.textContent || '';
 
       options.text = () => targetText;
