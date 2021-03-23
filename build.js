@@ -18,6 +18,6 @@ buildSync({
     'src/copy-clipboard/copy-clipboard.ts',
     'src/disable-scrolling/disable-scrolling.ts',
     'src/editor-friendly-link-blocks/editor-friendly-link-blocks.ts',
-    'src/infinite-slider/infinite-slider.ts',
+    'src/infinite-sliders/infinite-sliders.ts',
   ],
 });
