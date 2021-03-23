@@ -27,11 +27,11 @@
   },
   "homepage": "https://github.com/finsweet/webflow-hacks#readme",
   "dependencies": {
-    "@types/body-scroll-lock": "^2.6.1",
     "body-scroll-lock": "^3.1.5",
     "clipboard": "^2.0.8"
   },
   "devDependencies": {
+    "@types/body-scroll-lock": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "esbuild": "^0.9.5",
