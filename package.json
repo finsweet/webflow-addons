@@ -1,20 +1,29 @@
 {
-  "name": "webflow-hacks",
+  "name": "@finsweet/webflow-addons",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "No-code Power Attributes: Native feeling Webflow add-ons without code.",
+  "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node .\\build.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/finsweet/webflow-hacks.git"
+    "url": "git+https://github.com/finsweet/webflow-addons.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "webflow",
+    "no-code",
+    "addons",
+    "hacks",
+    "snippets"
+  ],
+  "author": {
+    "name": "Finsweet",
+    "url": "https://www.finsweet.com/"
+  },
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/finsweet/webflow-hacks/issues"
+    "url": "https://sweetjs.finsweet.com/"
   },
   "homepage": "https://github.com/finsweet/webflow-hacks#readme",
   "dependencies": {
