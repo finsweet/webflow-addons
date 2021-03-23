@@ -2,11 +2,12 @@ import { cloneNode } from '../utils.ts/helpers';
 
 /**
  * Infinite looping Webflow sliders
- * @argument selectors OPTIONAL [data-selectors]
+ * @param querySelector
+ * @attribute [data-selector] OPTIONAL
  */
-document.addEventListener('DOMContentLoaded', () => {
-  const selectors = document.currentScript?.getAttribute('data-selectors');
-  const sliders = document.querySelectorAll<HTMLDivElement>(selectors || '.w-slider');
+export const initInfiniteSliders = (querySelector?: string): void => {
+  const selector = querySelector || document.currentScript?.getAttribute('data-selector');
+  const sliders = document.querySelectorAll<HTMLDivElement>(selector || '.w-slider');
 
   for (const slider of sliders) {
     const mask = slider.querySelector('.w-slider-mask');
@@ -38,4 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     );
   }
-});
+};
+
+// Init
+document.addEventListener('DOMContentLoaded', () => initInfiniteSliders);

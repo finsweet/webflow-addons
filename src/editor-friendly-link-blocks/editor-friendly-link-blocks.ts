@@ -1,14 +1,15 @@
 /**
  * Editor friendly link blocks
- * @argument selectors [data-selectors]
+ * @param querySelector
+ * @attribute [data-selector]
  */
-document.addEventListener('DOMContentLoaded', () => {
-  const selectors = document.currentScript?.getAttribute('data-selectors');
-  if (!selectors) return;
+export const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
+  const selector = querySelector || document.currentScript?.getAttribute('data-selector');
+  if (!selector) return;
 
   // Funtions
   const handleAccessibility = () => {
-    const buttons = document.querySelectorAll<HTMLElement>(selectors);
+    const buttons = document.querySelectorAll<HTMLElement>(selector);
     buttons.forEach((button) => {
       const anchorElement = button.querySelector('a');
       if (anchorElement && anchorElement.href) {
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     )
       return;
 
-    const target = e.target.closest(selectors);
+    const target = e.target.closest(selector);
     if (!target) return;
 
     e.preventDefault();
@@ -38,9 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Handle accessibility
-  document.addEventListener('DOMContentLoaded', handleAccessibility);
+  handleAccessibility();
 
   // Listen to events
   window.addEventListener('click', handleTargets);
   window.addEventListener('keydown', handleTargets);
-});
+};
+
+// Init
+document.addEventListener('DOMContentLoaded', () => initEditorFriendlyLinkBlocks());

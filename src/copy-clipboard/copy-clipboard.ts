@@ -1,10 +1,11 @@
 import ClipboardJS from 'clipboard';
 import { findTextNode } from '../utils.ts/helpers';
+import { isFormField } from '../utils.ts/type-guards';
 
 /**
  * Copy text to clipboard through simple custom attributes.
  */
-document.addEventListener('DOMContentLoaded', () => {
+export const initCopyClipboard = (): void => {
   const copyTriggers = document.querySelectorAll('[data-copy]');
 
   for (const trigger of copyTriggers) {
@@ -23,8 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // If it's a selector, set the target in the options
     if (isValidSelector) {
-      const targetText = document.querySelector(datasetValue)?.textContent;
-      if (targetText) options.text = () => targetText;
+      const target = document.querySelector(datasetValue);
+      let targetText = '';
+
+      if (isFormField(target)) targetText = target.value;
+      else if (target) targetText = target.textContent || '';
+
+      options.text = () => targetText;
     }
     // If not, set it as text
     else options.text = () => datasetValue;
@@ -44,4 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
   }
-});
+};
+
+// Init
+document.addEventListener('DOMContentLoaded', initCopyClipboard);
