@@ -3,7 +3,7 @@
  * @param querySelector
  * @attribute [data-selector]
  */
-export const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
+const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
   const selector = querySelector || document.currentScript?.getAttribute('data-selector');
   if (!selector) return;
 
@@ -48,3 +48,6 @@ export const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
 
 // Init
 document.addEventListener('DOMContentLoaded', () => initEditorFriendlyLinkBlocks());
+
+// Export
+export default initEditorFriendlyLinkBlocks;

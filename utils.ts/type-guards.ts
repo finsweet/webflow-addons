@@ -1,4 +1,4 @@
-import { FormField } from '../types';
+import { FormField } from './types';
 
 /**
  * Checks if an element is a form element

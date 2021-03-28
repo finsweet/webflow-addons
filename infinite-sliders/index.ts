@@ -1,11 +1,11 @@
-import { cloneNode } from './utils.ts/helpers';
+import { cloneNode } from '../utils.ts/helpers';
 
 /**
  * Infinite looping Webflow sliders
  * @param querySelector
  * @attribute [data-selector] OPTIONAL
  */
-export const initInfiniteSliders = (querySelector?: string): void => {
+const initInfiniteSliders = (querySelector?: string): void => {
   const selector = querySelector || document.currentScript?.getAttribute('data-selector') || '.w-slider';
   const sliders = document.querySelectorAll<HTMLDivElement>(selector);
 
@@ -43,3 +43,6 @@ export const initInfiniteSliders = (querySelector?: string): void => {
 
 // Init
 document.addEventListener('DOMContentLoaded', () => initInfiniteSliders);
+
+// Export
+export default initInfiniteSliders;

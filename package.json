@@ -1,6 +1,6 @@
 {
   "name": "@finsweet/webflow-addons",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "No-code Power Attributes: Native feeling Webflow add-ons without code.",
   "main": "src/index.ts",
   "scripts": {

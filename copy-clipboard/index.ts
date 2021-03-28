@@ -1,5 +1,5 @@
+import { findTextNode } from '../utils.ts/helpers';
 import ClipboardJS from 'clipboard';
-import { findTextNode } from './utils.ts/helpers';
 
 /**
  * Copy text to clipboard through simple custom attributes.
@@ -7,7 +7,7 @@ import { findTextNode } from './utils.ts/helpers';
  * @attribute [data-copied] Message to be displayed after copying
  * @attribute [data-copied-duration] Duration that the data-copied text will be displayed
  */
-export const initCopyClipboard = (): void => {
+const initCopyClipboard = (): void => {
   const copyTriggers = document.querySelectorAll('[data-copy]');
 
   for (const trigger of copyTriggers) {
@@ -52,3 +52,6 @@ export const initCopyClipboard = (): void => {
 
 // Init
 document.addEventListener('DOMContentLoaded', initCopyClipboard);
+
+// Export
+export default initCopyClipboard;
