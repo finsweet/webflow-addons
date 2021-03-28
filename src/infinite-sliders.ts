@@ -6,8 +6,8 @@ import { cloneNode } from './utils.ts/helpers';
  * @attribute [data-selector] OPTIONAL
  */
 export const initInfiniteSliders = (querySelector?: string): void => {
-  const selector = querySelector || document.currentScript?.getAttribute('data-selector');
-  const sliders = document.querySelectorAll<HTMLDivElement>(selector || '.w-slider');
+  const selector = querySelector || document.currentScript?.getAttribute('data-selector') || '.w-slider';
+  const sliders = document.querySelectorAll<HTMLDivElement>(selector);
 
   for (const slider of sliders) {
     const mask = slider.querySelector('.w-slider-mask');
