@@ -71,8 +71,5 @@ const initDisableScrolling = (): void => {
   });
 };
 
-// Init
-document.addEventListener('DOMContentLoaded', initDisableScrolling);
-
 // Export
 export default initDisableScrolling;

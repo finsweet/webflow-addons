@@ -50,8 +50,5 @@ const initCopyClipboard = (): void => {
   }
 };
 
-// Init
-document.addEventListener('DOMContentLoaded', initCopyClipboard);
-
 // Export
 export default initCopyClipboard;

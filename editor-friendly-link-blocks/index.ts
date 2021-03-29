@@ -46,8 +46,5 @@ const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
   window.addEventListener('keydown', handleTargets);
 };
 
-// Init
-document.addEventListener('DOMContentLoaded', () => initEditorFriendlyLinkBlocks());
-
 // Export
 export default initEditorFriendlyLinkBlocks;

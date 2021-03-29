@@ -41,8 +41,5 @@ const initInfiniteSliders = (querySelector?: string): void => {
   }
 };
 
-// Init
-document.addEventListener('DOMContentLoaded', () => initInfiniteSliders);
-
 // Export
 export default initInfiniteSliders;

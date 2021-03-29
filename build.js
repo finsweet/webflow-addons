@@ -12,22 +12,22 @@ const defaultSettings = {
 // Files building
 buildSync({
   ...defaultSettings,
-  entryPoints: ['copy-clipboard/index.ts'],
+  entryPoints: ['copy-clipboard/load.ts'],
   outfile: 'dist/copy-clipboard.js',
 });
 
 buildSync({
   ...defaultSettings,
-  entryPoints: ['disable-scrolling/index.ts'],
+  entryPoints: ['disable-scrolling/load.ts'],
   outfile: 'dist/disable-scrolling.js',
 });
 buildSync({
   ...defaultSettings,
-  entryPoints: ['editor-friendly-link-blocks/index.ts'],
+  entryPoints: ['editor-friendly-link-blocks/load.ts'],
   outfile: 'dist/editor-friendly-link-blocks.js',
 });
 buildSync({
   ...defaultSettings,
-  entryPoints: ['infinite-sliders/index.ts'],
+  entryPoints: ['infinite-sliders/load.ts'],
   outfile: 'dist/infinite-sliders.js',
 });
