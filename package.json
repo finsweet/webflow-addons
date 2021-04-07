@@ -4,7 +4,7 @@
   "description": "No-code Power Attributes: Native feeling Webflow add-ons without code.",
   "main": "src/index.ts",
   "scripts": {
-    "build": "node .\\build.js"
+    "build": "node .\\bin\\build.js"
   },
   "repository": {
     "type": "git",
@@ -32,10 +32,10 @@
   },
   "devDependencies": {
     "@types/body-scroll-lock": "^2.6.1",
-    "@typescript-eslint/eslint-plugin": "^4.18.0",
-    "@typescript-eslint/parser": "^4.18.0",
-    "esbuild": "^0.9.5",
-    "eslint": "^7.22.0",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "esbuild": "^0.11.5",
+    "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "prettier": "^2.2.1",
