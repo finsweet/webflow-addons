@@ -1,4 +1,6 @@
 node_modules/
+bin/
+utils/
 .prettierignore
 .prettierrc
 build.js
