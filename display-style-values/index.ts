@@ -15,8 +15,6 @@ const initDisplayStyleValues = (): void => {
 
     const style = getComputedStyle(element).getPropertyValue(styleKey);
     if (style) target.textContent = style;
-
-    console.log({ styleKey, target, style });
   });
 };
 
