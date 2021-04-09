@@ -21,13 +21,21 @@ buildSync({
   entryPoints: ['disable-scrolling/load.ts'],
   outfile: 'dist/disable-scrolling.js',
 });
+
 buildSync({
   ...defaultSettings,
   entryPoints: ['editor-friendly-link-blocks/load.ts'],
   outfile: 'dist/editor-friendly-link-blocks.js',
 });
+
 buildSync({
   ...defaultSettings,
   entryPoints: ['infinite-sliders/load.ts'],
   outfile: 'dist/infinite-sliders.js',
+});
+
+buildSync({
+  ...defaultSettings,
+  entryPoints: ['display-style-values/load.ts'],
+  outfile: 'dist/display-style-values.js',
 });
