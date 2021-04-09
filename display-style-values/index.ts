@@ -6,16 +6,16 @@
 const initDisplayStyleValues = (): void => {
   const displayStyleElements = document.querySelectorAll('[data-display-style]');
 
-  displayStyleElements.forEach((element) => {
+  for (const element of displayStyleElements) {
     const styleKey = element.getAttribute('data-display-style');
-    if (!styleKey) return;
+    if (!styleKey) continue;
 
     const targetSelector = element.getAttribute('data-display-target');
     const target = targetSelector ? document.querySelector(targetSelector) || element : element;
 
     const style = getComputedStyle(element).getPropertyValue(styleKey);
     if (style) target.textContent = style;
-  });
+  }
 };
 
 export default initDisplayStyleValues;
