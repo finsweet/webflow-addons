@@ -1,4 +1,4 @@
-const pseudoSelectors = ['before', ':before', '::before', 'after', ':after', '::after'];
+const validPseudoSelectors = ['before', ':before', '::before', 'after', ':after', '::after'];
 
 /**
  * Copy text to clipboard through simple custom attributes.
@@ -14,37 +14,34 @@ const initDisplayStyleValues = (): void => {
     const styleKey = element.getAttribute('data-display-style');
     if (!styleKey) continue;
 
-    // Get the computed style, making sure rbg values are converted to hex
-    const style = rgbToHex(getComputedStyle(element).getPropertyValue(styleKey));
-    if (!style) continue;
-
     // Check if there's an explicit target
-    const targetSelector = element.getAttribute('data-display-target');
-    let explicitTarget: Element | null = null;
-
-    if (targetSelector) {
-      // If it's a pseudoelement, add the correspondent CSS and continue
-      const pseudoSelector = pseudoSelectors.find((selector) => targetSelector === selector);
-      if (pseudoSelector) {
-        element.id = element.id || `pseudo-${index}`;
-        addCSS(`#${element.id}::${pseudoSelector.replace(/:/g, '')} { content: '${style}'; }`);
-        continue;
-      }
-      // If not, get the explicit target
-      else explicitTarget = document.querySelector(targetSelector);
-    }
+    const fromSelector = element.getAttribute('data-display-from');
+    const fromExplicitTarget = fromSelector ? document.querySelector(fromSelector) : null;
 
     // Check if there's a group target
     const groupWrapper = element.closest('[data-display-group="wrapper"]');
     const groupTarget = groupWrapper ? groupWrapper.querySelector('[data-display-group="target"]') : null;
 
     // Assign the target by order of preference
-    let target: Element;
-    if (explicitTarget) target = explicitTarget;
-    else if (groupTarget) target = groupTarget;
-    else target = element;
+    let fromTarget: Element;
+    if (fromExplicitTarget) fromTarget = fromExplicitTarget;
+    else if (groupTarget) fromTarget = groupTarget;
+    else fromTarget = element;
 
-    target.textContent = style;
+    // Get the computed style, making sure rbg values are converted to hex
+    const style = rgbToHex(getComputedStyle(fromTarget).getPropertyValue(styleKey));
+    if (!style) continue;
+
+    // If it's a pseudoelement, add the correspondent CSS
+    const pseudoSelector = element.getAttribute('data-display-pseudo');
+    const pseudoTarget = validPseudoSelectors.find((selector) => pseudoSelector === selector);
+    if (pseudoTarget) {
+      element.id = element.id || `pseudo-${index}`;
+      addCSS(`#${element.id}::${pseudoTarget.replace(/:/g, '')} { content: '${style}'; }`);
+    }
+
+    // If not, display the CSS as textContent
+    else element.textContent = style;
   }
 };
 
