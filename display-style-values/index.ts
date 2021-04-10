@@ -3,8 +3,8 @@ const validPseudoSelectors = ['before', ':before', '::before', 'after', ':after'
 /**
  * Copy text to clipboard through simple custom attributes.
  * @attribute [data-display-style] To set what style value to display. Example: data-display-style="font-size"
- * @attribute [data-display-target] OPTIONAL Target to render the display value. If not provided, the same element with the data-display-style will act as the target. Example: data-display-target="#target-id"
- * @attribute [data-display-group] OPTIONAL To group elements. The wrapper takes data-display-group="wrapper" and the target inside takes data-display-group="target"
+ * @attribute [data-display-from] OPTIONAL target to get the display value from. If not provided, the same element with the data-display-style will act as the target. Example: data-display-from="#target-id"
+ * @attribute [data-display-group] OPTIONAL To group elements. The wrapper takes data-display-group="wrapper" and the target inside takes data-display-group="from"
  */
 const initDisplayStyleValues = (): void => {
   const displayStyleElements = document.querySelectorAll('[data-display-style]');
