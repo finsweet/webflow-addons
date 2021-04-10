@@ -76,10 +76,10 @@ const rgbToHex = (styleString: string) => {
   const hasRbg = regex.test(styleString);
   if (!hasRbg) return styleString;
 
-  const styleArray = styleString.match(regex);
-  if (!styleArray) return styleString;
+  const rgbArray = styleString.match(regex);
+  if (!rgbArray) return styleString;
 
-  const [_, r, g, b] = styleArray; // eslint-disable-line
+  const [_, r, g, b] = rgbArray; // eslint-disable-line
 
   return '#' + stringToHex(r) + stringToHex(g) + stringToHex(b);
 };
