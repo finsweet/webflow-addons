@@ -20,7 +20,7 @@ const initDisplayStyleValues = (): void => {
 
     // Check if there's a group target
     const groupWrapper = element.closest('[data-display-group="wrapper"]');
-    const groupTarget = groupWrapper ? groupWrapper.querySelector('[data-display-group="target"]') : null;
+    const groupTarget = groupWrapper ? groupWrapper.querySelector('[data-display-group="from"]') : null;
 
     // Assign the target by order of preference
     let fromTarget: Element;
