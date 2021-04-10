@@ -73,8 +73,8 @@ const rgbToHex = (styleString: string) => {
     return hex.length === 1 ? '0' + hex : hex;
   };
 
-  const isRbg = regex.test(styleString);
-  if (!isRbg) return styleString;
+  const hasRbg = regex.test(styleString);
+  if (!hasRbg) return styleString;
 
   const styleArray = styleString.match(regex);
   if (!styleArray) return styleString;
