@@ -1,4 +1,5 @@
-const validPseudoSelectors = ['before', ':before', '::before', 'after', ':after', '::after'];
+import { getElementsDataByViewportWidth, initStyleTag } from './view';
+import { createIFrameElement, getComputedProperty } from './helpers';
 
 /**
  * Copy text to clipboard through simple custom attributes.
@@ -6,92 +7,50 @@ const validPseudoSelectors = ['before', ':before', '::before', 'after', ':after'
  * @attribute [data-display-from] OPTIONAL target to get the display value from. If not provided, the same element with the data-display-style will act as the target. Example: data-display-from="#target-id"
  * @attribute [data-display-group] OPTIONAL To group elements. The wrapper takes data-display-group="wrapper" and the target inside takes data-display-group="from"
  * @attribute [data-display-property] OPTIONAL To display the property name + the value
+ * @attribute [data-display-viewport] OPTIONAL To display the property value in a specific viewport size. Example: data-display-viewport="768px"
  */
-const initDisplayStyleValues = (): void => {
-  const displayStyleElements = document.querySelectorAll('[data-display-style]');
+const initDisplayStyleValues = (includeResponsive = true): void => {
+  const elementsDataByViewportWidth = getElementsDataByViewportWidth(includeResponsive);
   const addCSS = initStyleTag();
 
-  for (const [index, element] of displayStyleElements.entries()) {
-    const styleProperty = element.getAttribute('data-display-style');
-    if (!styleProperty) continue;
+  for (const viewportWidth in elementsDataByViewportWidth) {
+    // Create an iframe with a specific width if the viewport is not the base
+    let iFrameElement: HTMLIFrameElement | undefined;
+    if (viewportWidth !== 'base') iFrameElement = createIFrameElement(viewportWidth);
 
-    // Check if there's an explicit target
-    const fromSelector = element.getAttribute('data-display-from');
-    const fromExplicitTarget = fromSelector ? document.querySelector(fromSelector) : null;
+    // Render the correspondent values
+    for (const [
+      index,
+      { element, fromTarget, styleProperty, displayPropertyName, pseudoTarget },
+    ] of elementsDataByViewportWidth[viewportWidth].entries()) {
+      // Get the computed style, making sure rbg values are converted to hex
+      let style = getComputedProperty(fromTarget, styleProperty, iFrameElement);
+      if (!style) continue;
 
-    // Check if there's a group target
-    const groupWrapper = element.closest('[data-display-group="wrapper"]');
-    const groupTarget = groupWrapper ? groupWrapper.querySelector('[data-display-group="from"]') : null;
+      // Check if the property name should be displayed too
+      if (displayPropertyName) {
+        const cssSyntax = displayPropertyName === 'css';
+        const cssBlockSyntax = displayPropertyName === 'css-block';
+        // prettier-ignore
+        style = `${cssBlockSyntax ? '{ ' : ''}${styleProperty}: ${style}${cssSyntax || cssBlockSyntax ? ';' : ''}${cssBlockSyntax ? ' }' : ''}`;
+      }
 
-    // Assign the target by order of preference
-    let fromTarget: Element;
-    if (fromExplicitTarget) fromTarget = fromExplicitTarget;
-    else if (groupTarget) fromTarget = groupTarget;
-    else fromTarget = element;
+      if (pseudoTarget) {
+        element.id = element.id || `pseudo-${index}`;
+        addCSS(`#${element.id}::${pseudoTarget.replace(/:/g, '')}{content: '${style}';}`);
+      }
 
-    // Get the computed style, making sure rbg values are converted to hex
-    let style = rgbToHex(getComputedStyle(fromTarget).getPropertyValue(styleProperty));
-    if (!style) continue;
-
-    // Check if the property name should be displayed too
-    const displayPropertyName = element.getAttribute('data-display-property');
-    if (displayPropertyName) {
-      const cssSyntax = displayPropertyName === 'css';
-      const cssBlockSyntax = displayPropertyName === 'css-block';
-      // prettier-ignore
-      style = `${cssBlockSyntax ? '{ ' : ''}${styleProperty}: ${style}${cssSyntax || cssBlockSyntax ? ';' : ''}${cssBlockSyntax ? ' }' : ''}`;
+      // If not, display the CSS as textContent
+      else element.textContent = style;
     }
 
-    // If it's a pseudoelement, add the correspondent CSS
-    const pseudoSelector = element.getAttribute('data-display-pseudo');
-    const pseudoTarget = validPseudoSelectors.find((selector) => pseudoSelector === selector);
-    if (pseudoTarget) {
-      element.id = element.id || `pseudo-${index}`;
-      addCSS(`#${element.id}::${pseudoTarget.replace(/:/g, '')} { content: '${style}'; }`);
-    }
-
-    // If not, display the CSS as textContent
-    else element.textContent = style;
+    /**
+     * @todo Check why sometimes the value gets fucked up if the iFrame is removed right away
+     */
+    setTimeout(() => iFrameElement?.remove(), 100);
   }
-};
 
-/**
- * @returns A callback to add CSS to the tag and render it
- */
-const initStyleTag = () => {
-  const styleTag = document.createElement('style');
-  let rendered = false;
-
-  return (css: string) => {
-    styleTag.innerHTML = styleTag.innerHTML + css;
-    if (!rendered) {
-      document.head.appendChild(styleTag);
-      rendered = true;
-    }
-  };
-};
-
-/**
- * Converts an rgb value to hex
- * @param styleString
- * @returns The converted string if it contains a rbg value.
- */
-const rgbToHex = (styleString: string) => {
-  const regex = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/;
-  const stringToHex = (string: string) => {
-    const hex = parseInt(string).toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
-  };
-
-  const hasRbg = regex.test(styleString);
-  if (!hasRbg) return styleString;
-
-  const rgbArray = styleString.match(regex);
-  if (!rgbArray) return styleString;
-
-  const [_, r, g, b] = rgbArray; // eslint-disable-line
-
-  return '#' + stringToHex(r) + stringToHex(g) + stringToHex(b);
+  window.addEventListener('resize', () => initDisplayStyleValues(false));
 };
 
 // Export
