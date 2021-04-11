@@ -39,7 +39,7 @@ const initDisplayStyleValues = (): void => {
       const cssSyntax = displayPropertyName === 'css';
       const cssBlockSyntax = displayPropertyName === 'css-block';
       // prettier-ignore
-      style = `${cssBlockSyntax ? '{' : ''} ${styleProperty}: ${style}${cssSyntax ? ';' : ''} ${cssBlockSyntax ? '}' : ''}`;
+      style = `${cssBlockSyntax ? '{' : ''} ${styleProperty}: ${style}${cssSyntax || cssBlockSyntax ? ';' : ''} ${cssBlockSyntax ? '}' : ''}`;
     }
 
     // If it's a pseudoelement, add the correspondent CSS
