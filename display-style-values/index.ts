@@ -5,14 +5,15 @@ const validPseudoSelectors = ['before', ':before', '::before', 'after', ':after'
  * @attribute [data-display-style] To set what style value to display. Example: data-display-style="font-size"
  * @attribute [data-display-from] OPTIONAL target to get the display value from. If not provided, the same element with the data-display-style will act as the target. Example: data-display-from="#target-id"
  * @attribute [data-display-group] OPTIONAL To group elements. The wrapper takes data-display-group="wrapper" and the target inside takes data-display-group="from"
+ * @attribute [data-display-property] OPTIONAL To display the property name + the value
  */
 const initDisplayStyleValues = (): void => {
   const displayStyleElements = document.querySelectorAll('[data-display-style]');
   const addCSS = initStyleTag();
 
   for (const [index, element] of displayStyleElements.entries()) {
-    const styleKey = element.getAttribute('data-display-style');
-    if (!styleKey) continue;
+    const styleProperty = element.getAttribute('data-display-style');
+    if (!styleProperty) continue;
 
     // Check if there's an explicit target
     const fromSelector = element.getAttribute('data-display-from');
@@ -29,8 +30,17 @@ const initDisplayStyleValues = (): void => {
     else fromTarget = element;
 
     // Get the computed style, making sure rbg values are converted to hex
-    const style = rgbToHex(getComputedStyle(fromTarget).getPropertyValue(styleKey));
+    let style = rgbToHex(getComputedStyle(fromTarget).getPropertyValue(styleProperty));
     if (!style) continue;
+
+    // Check if the property name should be displayed too
+    const displayPropertyName = element.getAttribute('data-display-property');
+    if (displayPropertyName) {
+      const cssSyntax = displayPropertyName === 'css';
+      const cssBlockSyntax = displayPropertyName === 'css-block';
+      // prettier-ignore
+      style = `${cssBlockSyntax ? '{' : ''} ${styleProperty}: ${style}${cssSyntax ? ';' : ''} ${cssBlockSyntax ? '}' : ''}`;
+    }
 
     // If it's a pseudoelement, add the correspondent CSS
     const pseudoSelector = element.getAttribute('data-display-pseudo');
