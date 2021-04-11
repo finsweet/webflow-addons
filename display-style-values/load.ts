@@ -1,4 +1,4 @@
 import initDisplayStyleValues from '.';
 
 // Init
-document.addEventListener('DOMContentLoaded', initDisplayStyleValues);
+document.addEventListener('DOMContentLoaded', () => initDisplayStyleValues());
