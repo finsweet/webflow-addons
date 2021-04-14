@@ -44,7 +44,9 @@ const initCopyClipboard = (): void => {
       if (copiedMessage && textNode) {
         const originalText = textNode.textContent;
         textNode.textContent = copiedMessage;
-        setTimeout(() => (textNode.textContent = originalText), copiedMessageDuration || 2000);
+        setTimeout(() => {
+          textNode.textContent = originalText;
+        }, copiedMessageDuration || 2000);
       }
     });
   }
