@@ -32,7 +32,9 @@ const initInfiniteSliders = (querySelector?: string): void => {
           mask.appendChild(newSlide);
 
           const slidesToTransform = [...slides].slice(originalSlidesLength);
-          slidesToTransform.forEach((slide) => (slide.style.transform = currentSlide.style.transform));
+          slidesToTransform.forEach((slide) => {
+            slide.style.transform = currentSlide.style.transform;
+          });
         } else {
           totalSlides.slice(originalSlidesLength).forEach((slide) => slide.remove());
         }
