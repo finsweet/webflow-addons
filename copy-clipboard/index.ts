@@ -20,7 +20,7 @@ const SUCCESS_CSS_CLASS = 'fs-copied';
  * @attribute [data-copied-duration] Duration that the data-copied text will be displayed
  *
  * <script> tag properties
- * @attribute [data-copy-selector] Accepts a query selector that will instanciate all the matched elements
+ * @attribute [data-copy-selector] Accepts a query selector that will instantiate all the matched elements
  * @attribute [data-copied-message] Message to be displayed after copying. It will affect all of the elements
  * @attribute [data-copied-duration] Duration that the data-copied text will be displayed. It will affect all of the elements
  */
