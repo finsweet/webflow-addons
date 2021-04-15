@@ -1,4 +1,5 @@
 import initCopyClipboard from '.';
 
 // Init
-document.addEventListener('DOMContentLoaded', initCopyClipboard);
+const { currentScript } = document;
+document.addEventListener('DOMContentLoaded', () => initCopyClipboard(currentScript));
