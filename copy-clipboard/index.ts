@@ -8,6 +8,9 @@ const ATTRIBUTES = {
   CopiedDuration: 'data-copied-duration',
 } as const;
 
+const DEFAULT_COPIED_MESSAGE_DURATION = 1000;
+const SUCCESS_CSS_CLASS = 'fs-copied';
+
 /**
  * Copy text to clipboard through simple custom attributes.
  *
@@ -40,7 +43,11 @@ const initCopyClipboard = (currentScript?: HTMLOrSVGScriptElement | null): void 
     // Get the message that should be set on the trigger after copying
     const copiedMessage = trigger.getAttribute(ATTRIBUTES.CopiedMessage) || globalCopiedMessage;
     const copiedMessageDuration = +(trigger.getAttribute(ATTRIBUTES.CopiedDuration) || globalCopiedDuration || '');
+
+    // Store the text node and the original text
     const textNode = findTextNode(trigger);
+    let originalText: string | null;
+    if (textNode) originalText = textNode.textContent;
 
     // Create options object
     const options: ClipboardJS.Options = {};
@@ -62,14 +69,15 @@ const initCopyClipboard = (currentScript?: HTMLOrSVGScriptElement | null): void 
     clipboard.on('success', (event: ClipboardJS.Event) => {
       event.clearSelection();
 
+      trigger.classList.add(SUCCESS_CSS_CLASS);
+
       // If copied message exists, add it when the copy event fires
-      if (copiedMessage && textNode) {
-        const originalText = textNode.textContent;
-        textNode.textContent = copiedMessage;
-        setTimeout(() => {
-          textNode.textContent = originalText;
-        }, copiedMessageDuration || 2000);
-      }
+      if (textNode && copiedMessage) textNode.textContent = copiedMessage;
+
+      setTimeout(() => {
+        trigger.classList.remove(SUCCESS_CSS_CLASS);
+        if (textNode) textNode.textContent = originalText || '';
+      }, copiedMessageDuration || DEFAULT_COPIED_MESSAGE_DURATION);
     });
   }
 };
