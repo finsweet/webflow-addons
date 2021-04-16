@@ -1,6 +1,6 @@
 {
   "name": "@finsweet/webflow-addons",
-  "version": "1.6.2",
+  "version": "1.6.4",
   "description": "No-code Power Attributes: Native feeling Webflow add-ons without code.",
   "main": "src/index.ts",
   "scripts": {
@@ -28,11 +28,13 @@
   "homepage": "https://github.com/finsweet/webflow-hacks#readme",
   "dependencies": {
     "body-scroll-lock": "^3.1.5",
-    "clipboard": "^2.0.8"
+    "clipboard": "^2.0.8",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
     "@finsweet/eslint-config": "^1.0.4",
     "@types/body-scroll-lock": "^2.6.1",
+    "@types/lodash-es": "^4.17.4",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "esbuild": "^0.11.5",
