@@ -1,5 +1,6 @@
 import { getElementsDataByViewportWidth, initStyleTag } from './view';
 import { createIFrameElement, getComputedProperty } from './helpers';
+import { debounce } from 'lodash-es';
 
 /**
  * Copy text to clipboard through simple custom attributes.
@@ -50,7 +51,8 @@ const initDisplayStyleValues = (includeResponsive = true): void => {
     setTimeout(() => iFrameElement?.remove(), 100);
   }
 
-  window.addEventListener('resize', () => initDisplayStyleValues(false));
+  const debouncedRestart = debounce(() => initDisplayStyleValues(false), 500);
+  window.addEventListener('resize', debouncedRestart);
 };
 
 // Export
