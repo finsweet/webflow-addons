@@ -1,5 +1,5 @@
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { isVisible } from '../utils.ts/helpers';
+import { isVisible } from '../utils/helpers';
 
 /**
  * Disable scrolling.

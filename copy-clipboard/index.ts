@@ -1,4 +1,4 @@
-import { findTextNode } from '../utils.ts/helpers';
+import { findTextNode } from '../utils/helpers';
 import ClipboardJS from 'clipboard';
 
 const ATTRIBUTES = {
