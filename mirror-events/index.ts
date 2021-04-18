@@ -5,6 +5,10 @@ import { FormField } from '../utils/types';
 const CLICK_ATTRIBUTE = 'fs-mirror-click';
 const INPUT_ATTRIBUTE = 'fs-mirror-input';
 
+/**
+ * Handle all click and "Enter" events
+ * @param e The event object
+ */
 const handleClickEvents = (e: MouseEvent | KeyboardEvent) => {
   const { target: mirrorOrigin } = e;
   if (!(mirrorOrigin instanceof Element) || ('key' in e && e.key !== 'Enter')) return;
@@ -16,6 +20,10 @@ const handleClickEvents = (e: MouseEvent | KeyboardEvent) => {
   if (mirrorTarget instanceof HTMLElement) mirrorTarget.click();
 };
 
+/**
+ * Handle all input events
+ * @param e The event object
+ */
 const handleInputEvents = (e: Event) => {
   const { target: mirrorOrigin } = e;
   if (!isFormField(mirrorOrigin)) return;
@@ -52,14 +60,22 @@ const handleInputEvents = (e: Event) => {
   }
 };
 
-const dispatchEvents = (field: FormField, events: string | string[]) => {
+/**
+ * Dispatch any events from an origin field
+ * @param element Element to dispatch the event from
+ * @param events Events to be dispatched, it accepts a single string or an array of strings
+ */
+const dispatchEvents = (element: Element, events: string | string[]) => {
   if (typeof events === 'string') events = [events];
 
   events.forEach((event) => {
-    field.dispatchEvent(new Event(event, { bubbles: true }));
+    element.dispatchEvent(new Event(event, { bubbles: true }));
   });
 };
 
+/**
+ * Init the event mirroring
+ */
 const initMirrorEvents = (): void => {
   if (document.querySelectorAll(`[${CLICK_ATTRIBUTE}]`).length) {
     window.addEventListener('click', handleClickEvents);
