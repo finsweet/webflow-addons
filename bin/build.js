@@ -39,3 +39,9 @@ buildSync({
   entryPoints: ['display-style-values/load.ts'],
   outfile: 'dist/display-style-values.js',
 });
+
+buildSync({
+  ...defaultSettings,
+  entryPoints: ['mirror-events/load.ts'],
+  outfile: 'dist/mirror-events.js',
+});
