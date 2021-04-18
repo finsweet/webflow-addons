@@ -1,5 +1,4 @@
 import { isFormField } from '../utils/type-guards';
-import { FormField } from '../utils/types';
 
 // Constants
 const CLICK_ATTRIBUTE = 'fs-mirror-click';
