@@ -2,43 +2,61 @@ import { findTextNode } from '../utils/helpers';
 import ClipboardJS from 'clipboard';
 
 const ATTRIBUTES = {
-  Main: 'data-copy',
-  GlobalSelector: 'data-copy-selector',
-  CopiedMessage: 'data-copied-message',
-  CopiedDuration: 'data-copied-duration',
+  Main: 'fs-copy',
+  GlobalSelector: 'fs-copy-selector',
+  CopiedMessage: 'fs-copied-message',
+  CopiedDuration: 'fs-copied-duration',
 } as const;
 
 const DEFAULT_COPIED_MESSAGE_DURATION = 1000;
 const SUCCESS_CSS_CLASS = 'fs-copied';
 
+interface GlobalParams {
+  globalSelector: string;
+  globalCopiedMessage?: string;
+  globalCopiedDuration?: string;
+}
+
 /**
  * Copy text to clipboard through simple custom attributes.
  *
  * Element properties
- * @attribute [data-copy] Accepts a query selector (id "#" or CSS Class ".") a text string or a "self" value.
- * @attribute [data-copied-message] Message to be displayed after copying
- * @attribute [data-copied-duration] Duration that the data-copied text will be displayed
+ * @attribute [fs-copy] Accepts a query selector (id "#" or CSS Class ".") a text string or a "self" value.
+ * @attribute [fs-copied-message] Message to be displayed after copying
+ * @attribute [fs-copied-duration] Duration that the fs-copied text will be displayed
  *
  * <script> tag properties
- * @attribute [data-copy-selector] Accepts a query selector that will instantiate all the matched elements
- * @attribute [data-copied-message] Message to be displayed after copying. It will affect all of the elements
- * @attribute [data-copied-duration] Duration that the data-copied text will be displayed. It will affect all of the elements
+ * @attribute [fs-copy-selector] Accepts a query selector that will instantiate all the matched elements
+ * @attribute [fs-copied-message] Message to be displayed after copying. It will affect all of the elements
+ * @attribute [fs-copied-duration] Duration that the fs-copied text will be displayed. It will affect all of the elements
  */
-const initCopyClipboard = (currentScript?: HTMLOrSVGScriptElement | null): void => {
-  let globalSelector: string | null = null;
-  let globalCopiedMessage: string | null = null;
-  let globalCopiedDuration: string | null = null;
+function initCopyClipboard({ globalParams }: { globalParams: GlobalParams | null }): void;
+function initCopyClipboard({ currentScript }: { currentScript: HTMLOrSVGScriptElement | null }): void;
+function initCopyClipboard({
+  currentScript,
+  globalParams,
+}: {
+  currentScript?: HTMLOrSVGScriptElement | null;
+  globalParams?: GlobalParams | null;
+}): void {
+  let globalSelector: string | null | undefined = null;
+  let globalCopiedMessage: string | null | undefined = null;
+  let globalCopiedDuration: string | null | undefined = null;
 
   if (currentScript) {
     globalSelector = currentScript.getAttribute(ATTRIBUTES.GlobalSelector);
     globalCopiedMessage = currentScript.getAttribute(ATTRIBUTES.CopiedMessage);
     globalCopiedDuration = currentScript.getAttribute(ATTRIBUTES.CopiedDuration);
+  } else if (globalParams) {
+    globalSelector = globalParams.globalSelector;
+    globalCopiedMessage = globalParams.globalCopiedMessage;
+    globalCopiedDuration = globalParams.globalCopiedDuration;
   }
 
   const copyTriggers = document.querySelectorAll(`[${ATTRIBUTES.Main}]${globalSelector ? `, ${globalSelector}` : ''}`);
 
   for (const trigger of copyTriggers) {
-    const targetValue = trigger.getAttribute('data-copy');
+    const targetValue = trigger.getAttribute(ATTRIBUTES.Main);
 
     // Get the message that should be set on the trigger after copying
     const copiedMessage = trigger.getAttribute(ATTRIBUTES.CopiedMessage) || globalCopiedMessage;
@@ -80,7 +98,7 @@ const initCopyClipboard = (currentScript?: HTMLOrSVGScriptElement | null): void 
       }, copiedMessageDuration || DEFAULT_COPIED_MESSAGE_DURATION);
     });
   }
-};
+}
 
 // Export
 export default initCopyClipboard;

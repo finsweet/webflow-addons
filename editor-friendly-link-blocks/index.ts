@@ -1,10 +1,18 @@
 /**
  * Editor friendly link blocks
  * @param querySelector
- * @attribute [data-selector]
+ * @attribute [fs-selector]
  */
-const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
-  const selector = querySelector || document.currentScript?.getAttribute('data-selector');
+function initEditorFriendlyLinkBlocks({ querySelector }: { querySelector: string }): void;
+function initEditorFriendlyLinkBlocks({ currentScript }: { currentScript: HTMLOrSVGScriptElement | null }): void;
+function initEditorFriendlyLinkBlocks({
+  querySelector,
+  currentScript,
+}: {
+  querySelector?: string;
+  currentScript?: HTMLOrSVGScriptElement | null;
+}): void {
+  const selector = querySelector || currentScript?.getAttribute('fs-selector');
   if (!selector) return;
 
   // Funtions
@@ -44,7 +52,7 @@ const initEditorFriendlyLinkBlocks = (querySelector?: string): void => {
   // Listen to events
   window.addEventListener('click', handleTargets);
   window.addEventListener('keydown', handleTargets);
-};
+}
 
 // Export
 export default initEditorFriendlyLinkBlocks;

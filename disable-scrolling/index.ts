@@ -9,8 +9,8 @@ import { isVisible } from '../utils/helpers';
  */
 const initDisableScrolling = (): void => {
   // ########## DOM Elements ##########
-  const displayTriggers = document.querySelectorAll<HTMLElement>('[data-disable-scroll="display"]');
-  const clickTriggers = document.querySelectorAll<HTMLElement>('[data-disable-scroll="click"]');
+  const displayTriggers = document.querySelectorAll<HTMLElement>('[fs-disable-scroll="display"]');
+  const clickTriggers = document.querySelectorAll<HTMLElement>('[fs-disable-scroll="click"]');
 
   // ########## Actions ##########
   let scrollingDisabled = false;
