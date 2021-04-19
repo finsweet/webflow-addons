@@ -1,0 +1,25 @@
+# Webflow Addons
+
+No-code Power Attributes: Native feeling Webflow add-ons without code.
+
+1. [Copy to clipboard](#copy-to-clipboard)
+
+## Copy to clipboard
+
+Users can set any element to copy a string value to the clipboard when clicking on it. The script can be set by adding attributes to individual elements or by setting global attributes to the `<script>` tag that will affect all elements.
+
+### Element attributes
+
+| Attribute              | Required | Accepted values                                                                                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data-copy`            | Yes      | A valid query selector (like IDs `#element-id` or CSS Classes `.element-class`), a `self` value or a random text string. | If the attribute is equal to `self`, the content of the element itself will be copied to the clipboard. If the attribute is equal to a valid query selector, the content of that element (if found) will be copied. If the attribute is equal to any other string value, that string will be copied to the clipboard. Examples: `data-copy = "self"` ; `data-copy = "#target-element"` ; `data-copy = "This is a random text!"` |
+| `data-copied-message`  | No       | Any random text string.                                                                                                  | If set, the text content of the element will be replaced for it when the copy action was successful. After a period of time (see `data-copied-duration`, the text content will revert to the original one). Example: `data-copied-message = "Copied!"`                                                                                                                                                                          |
+| `data-copied-duration` | No       | A duration in miliseconds. Defaults to `1000`.                                                                           | This attribute determines for how long will the `data-copied-message` be displayed before reverting to the original text.                                                                                                                                                                                                                                                                                                       |
+
+### Global &lt;script> attributes
+
+| Attribute              | Required | Accepted values                                                                  | Description                                                                                                                                                                                                                               |
+| ---------------------- | -------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data-copy-selector`   | No       | A valid query selector (like IDs `#element-id` or CSS Classes `.element-class`). | Accepts a query selector that will instantiate all the matched elements. Example: `data-copy-selector = ".copy-button"` will make all the `.copy-button` elements to act like if they had the `data-copy = "self"` attribute set to them. |
+| `data-copied-message`  | No       | Any random text string.                                                          | Same as the Element specific attribute, affects all the elements.                                                                                                                                                                         |
+| `data-copied-duration` | No       | A duration in miliseconds. Defaults to `1000`.                                   | Same as the Element specific attribute, affects all the elements.                                                                                                                                                                         |
