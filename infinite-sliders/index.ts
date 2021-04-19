@@ -3,10 +3,18 @@ import { cloneNode } from '../utils/helpers';
 /**
  * Infinite looping Webflow sliders
  * @param querySelector
- * @attribute [data-selector] OPTIONAL
+ * @attribute [fs-selector] OPTIONAL
  */
-const initInfiniteSliders = (querySelector?: string): void => {
-  const selector = querySelector || document.currentScript?.getAttribute('data-selector') || '.w-slider';
+function initInfiniteSliders({ querySelector }: { querySelector: string }): void;
+function initInfiniteSliders({ currentScript }: { currentScript: HTMLOrSVGScriptElement | null }): void;
+function initInfiniteSliders({
+  querySelector,
+  currentScript,
+}: {
+  querySelector?: string;
+  currentScript?: HTMLOrSVGScriptElement | null;
+}): void {
+  const selector = querySelector || currentScript?.getAttribute('fs-selector') || '.w-slider';
   const sliders = document.querySelectorAll<HTMLDivElement>(selector);
 
   for (const slider of sliders) {
@@ -41,7 +49,7 @@ const initInfiniteSliders = (querySelector?: string): void => {
       })
     );
   }
-};
+}
 
 // Export
 export default initInfiniteSliders;
