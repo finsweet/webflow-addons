@@ -6,6 +6,7 @@ import { debounce } from 'lodash-es';
  * Copy text to clipboard through simple custom attributes.
  * @attribute [data-display-style] To set what style value to display. Example: data-display-style="font-size"
  * @attribute [data-display-from] OPTIONAL target to get the display value from. If not provided, the same element with the data-display-style will act as the target. Example: data-display-from="#target-id"
+ * @attribute [data-display-pseudo] OPTIONAL It will display the style value on the choosen element's pseudo-element
  * @attribute [data-display-group] OPTIONAL To group elements. The wrapper takes data-display-group="wrapper" and the target inside takes data-display-group="from"
  * @attribute [data-display-property] OPTIONAL To display the property name + the value
  * @attribute [data-display-viewport] OPTIONAL To display the property value in a specific viewport size. Example: data-display-viewport="768px"
