@@ -55,3 +55,29 @@ property-name: property-value;
  { property-name: property-value; }
 ```
 <!-- prettier-ignore-end -->
+
+## Displaying a value for a specific viewport width
+
+If this attribute is used, the outputted value will be the correspondent when the element is displayed at the specified viewport.
+
+| Attribute               | Accepted values                                                                             | Description                                                                                                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `data-display-viewport` | Any viewport width, with or without `px`.<br/><br/>Examples:`1920px`<br/>`1657`<br/>`450px` | If set, the style will be displayed with the correspondent value on the specified viewport. Example: "The font size value when the viewport width is 1280px wide." |
+
+## Groupped targets
+
+You can group elements to share the same global attributes.
+
+| Attribute            | Value     | Required | Description                                                                                  |
+| -------------------- | --------- | -------- | -------------------------------------------------------------------------------------------- |
+| `data-display-group` | `wrapper` | Yes      | Mandatory, this attribute is set to the parent element that wraps all the affected children. |
+
+When set, all the children that have the `data-display-style` attribute will inherit any additional attributes that the parent element has.
+
+Example: You set a `data-display-property = "css"` to the parent wrapper. Then, all children that are showing a style value with the `data-display-style` attribute will also output the [property name](#displaying-the-property-name).
+
+Additionally, you can specify a target element in the group:
+
+| Attribute            | Value  | Required | Description                                                                        |
+| -------------------- | ------ | -------- | ---------------------------------------------------------------------------------- |
+| `data-display-group` | `from` | No       | If set, all the `data-display-style` children will use this element as the target. |
