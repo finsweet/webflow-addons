@@ -1,4 +1,5 @@
 import initInfiniteSliders from '.';
 
 // Init
-document.addEventListener('DOMContentLoaded', () => initInfiniteSliders());
+const { currentScript } = document;
+document.addEventListener('DOMContentLoaded', () => initInfiniteSliders({ currentScript }));
