@@ -5,6 +5,10 @@ Users can prvent the page from scrolling when:
 - An element is clicked.
 - An element is visible on the page.
 
+```html
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/disable-scrolling.js"></script>
+```
+
 ## Element attributes
 
 Ony one attribute available: `fs-disable-scroll`. It accepts the following values:

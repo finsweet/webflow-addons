@@ -2,6 +2,10 @@
 
 Replicate `click` and `input` events from one element to another.
 
+```html
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/mirror-events.js"></script>
+```
+
 ## Element attributes
 
 | Attribute         | Accepted values                                                                  | Allowed elements                                                  | Description                                                                                                                          |

@@ -2,6 +2,12 @@
 
 Makes any element behave like a _`Link Block`_ (clickable, keyboard navigation accessible, focusable) but without using the _`Link Block`_ component. Helpful for editing URLs in Webflow's Editor.
 
+<!-- prettier-ignore-start -->
+```html
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/editor-friendly-link-blocks.js"></script>
+```
+<!-- prettier-ignore-end -->
+
 It requires the following setup:
 
 - [Parent Wrapper]

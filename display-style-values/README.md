@@ -1,6 +1,10 @@
 # Display Style Values
 
-Users can display any CSS property of an element on the page. There are multiple available options:
+Users can display any CSS property of an element on the page.
+
+```html
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/display-style-values.js"></script>
+```
 
 ## Setting an element to display a style value
 

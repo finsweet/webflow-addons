@@ -2,6 +2,10 @@
 
 Makes a slider seamlessly loop infinitelly without abroupt jumps between the last and first slides.
 
+```html
+<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/infinite-sliders.js"></script>
+```
+
 ## Global &lt;script> attributes
 
 | Attribute     | Required | Accepted values                                                                  | Description                                                                                                                                        |
