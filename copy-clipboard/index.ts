@@ -15,7 +15,7 @@ const SUCCESS_CSS_CLASS = 'fs-copied';
  * Copy text to clipboard through simple custom attributes.
  *
  * Element properties
- * @attribute [data-copy] Accepts a query selector (id "#" or CSS Class ".") or a text string
+ * @attribute [data-copy] Accepts a query selector (id "#" or CSS Class ".") a text string or a "self" value.
  * @attribute [data-copied-message] Message to be displayed after copying
  * @attribute [data-copied-duration] Duration that the data-copied text will be displayed
  *
@@ -38,7 +38,7 @@ const initCopyClipboard = (currentScript?: HTMLOrSVGScriptElement | null): void 
   const copyTriggers = document.querySelectorAll(`[${ATTRIBUTES.Main}]${globalSelector ? `, ${globalSelector}` : ''}`);
 
   for (const trigger of copyTriggers) {
-    const datasetValue = trigger.getAttribute('data-copy');
+    const targetValue = trigger.getAttribute('data-copy');
 
     // Get the message that should be set on the trigger after copying
     const copiedMessage = trigger.getAttribute(ATTRIBUTES.CopiedMessage) || globalCopiedMessage;
@@ -53,14 +53,14 @@ const initCopyClipboard = (currentScript?: HTMLOrSVGScriptElement | null): void 
     const options: ClipboardJS.Options = {};
 
     // If no dataset or the target is self, just copy the trigger textContent
-    if (!datasetValue || datasetValue === 'self') options.text = () => trigger.textContent || '';
+    if (!targetValue || targetValue === 'self') options.text = () => trigger.textContent || '';
     // Check if the value in the dataset is a selector
-    else if (/^(\.|#).*/g.test(datasetValue)) {
-      const target = document.querySelector(datasetValue);
+    else if (/^(\.|#).*/g.test(targetValue)) {
+      const target = document.querySelector(targetValue);
       if (target) options.target = () => target;
     }
     // If not, set it as text
-    else options.text = () => datasetValue;
+    else options.text = () => targetValue;
 
     // Create new clipboard instance
     const clipboard = new ClipboardJS(trigger, options);
