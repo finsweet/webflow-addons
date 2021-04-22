@@ -6,6 +6,16 @@ export const isVisible = (element: HTMLElement): boolean =>
   !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
 
 /**
+ * Check if an element is scrollable
+ * @param element
+ * @returns {boolean}
+ */
+export const isScrollable = (element: Element): boolean => {
+  const { overflow } = getComputedStyle(element);
+  return overflow === 'auto' || overflow === 'scroll';
+};
+
+/**
  * Find the first text node child of an element
  * @param element
  */
