@@ -1,4 +1,5 @@
 import initDisableScrolling from '.';
 
 // Init
-document.addEventListener('DOMContentLoaded', initDisableScrolling);
+const { currentScript } = document;
+document.addEventListener('DOMContentLoaded', () => initDisableScrolling({ currentScript }));
