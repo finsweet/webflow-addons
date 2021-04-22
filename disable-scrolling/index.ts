@@ -1,5 +1,6 @@
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { isScrollable, isVisible } from '../utils/helpers';
+import { findFirstScrollableElement } from './helpers';
+import { isVisible } from '../utils/helpers';
 
 // Constants
 const ATTRIBUTES = {
@@ -7,19 +8,6 @@ const ATTRIBUTES = {
   PreserveScrollTarget: 'fs-preserve-scroll',
   ReserveScrollBarGap: 'fs-preserve-gap',
 } as const;
-
-// Helpers
-const findFirstScrollableElement = (element: HTMLElement) => {
-  if (isScrollable(element)) return element;
-
-  const children = element.querySelectorAll('*');
-  for (const child of children) {
-    if (!(child instanceof HTMLElement)) continue;
-    if (isScrollable(child)) return child;
-  }
-
-  return element;
-};
 
 // Types
 interface GlobalParams {
@@ -91,7 +79,10 @@ function initDisableScrolling({
   const displayPreserveScrollTargets: Map<HTMLElement, Element> = new Map();
 
   // Store the first scrollable element inside each trigger
-  displayTriggers.forEach((trigger) => displayPreserveScrollTargets.set(trigger, findFirstScrollableElement(trigger)));
+  displayTriggers.forEach((trigger) => {
+    const preserveScrollTarget = findFirstScrollableElement(trigger) || trigger;
+    displayPreserveScrollTargets.set(trigger, preserveScrollTarget);
+  });
 
   // Define MutationObserver's callback
   const callback: MutationCallback = (mutations) => {
