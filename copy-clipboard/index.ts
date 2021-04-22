@@ -30,14 +30,14 @@ interface GlobalParams {
  * @attribute [fs-copied-message] Message to be displayed after copying. It will affect all of the elements
  * @attribute [fs-copied-duration] Duration that the fs-copied text will be displayed. It will affect all of the elements
  */
-function initCopyClipboard({ globalParams }: { globalParams: GlobalParams | null }): void;
+function initCopyClipboard({ globalParams }: { globalParams: GlobalParams }): void;
 function initCopyClipboard({ currentScript }: { currentScript: HTMLOrSVGScriptElement | null }): void;
 function initCopyClipboard({
   currentScript,
   globalParams,
 }: {
   currentScript?: HTMLOrSVGScriptElement | null;
-  globalParams?: GlobalParams | null;
+  globalParams?: GlobalParams;
 }): void {
   let globalSelector: string | null | undefined = null;
   let globalCopiedMessage: string | null | undefined = null;
