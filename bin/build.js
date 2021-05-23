@@ -1,7 +1,12 @@
 // Import ESBuild
-const { buildSync } = require('esbuild'); // eslint-disable-line
+import esbuild from 'esbuild';
 
-// Default Settings
+const { buildSync } = esbuild;
+
+/**
+ * Default settings
+ * @type {esbuild.BuildOptions}
+ */
 const defaultSettings = {
   bundle: true,
   minify: true,
@@ -14,6 +19,12 @@ buildSync({
   ...defaultSettings,
   entryPoints: ['copy-clipboard/load.ts'],
   outfile: 'dist/copy-clipboard.js',
+});
+
+buildSync({
+  ...defaultSettings,
+  entryPoints: ['custom-slider-dots/load.ts'],
+  outfile: 'dist/custom-slider-dots.js',
 });
 
 buildSync({
