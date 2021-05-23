@@ -1,4 +1,6 @@
 import initMirrorEvents from '.';
 
 // Init
-document.addEventListener('DOMContentLoaded', () => initMirrorEvents());
+
+window.Webflow = window.Webflow || [];
+window.Webflow.push(initMirrorEvents);

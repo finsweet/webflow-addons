@@ -2,4 +2,8 @@ import initCopyClipboard from '.';
 
 // Init
 const { currentScript } = document;
-document.addEventListener('DOMContentLoaded', () => initCopyClipboard({ currentScript }));
+
+window.Webflow = window.Webflow || [];
+window.Webflow.push(() => {
+  initCopyClipboard({ currentScript });
+});

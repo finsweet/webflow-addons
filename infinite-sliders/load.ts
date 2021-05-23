@@ -2,4 +2,6 @@ import initInfiniteSliders from '.';
 
 // Init
 const { currentScript } = document;
-document.addEventListener('DOMContentLoaded', () => initInfiniteSliders({ currentScript }));
+
+window.Webflow = window.Webflow || [];
+window.Webflow.push(() => initInfiniteSliders({ currentScript }));

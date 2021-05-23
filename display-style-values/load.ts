@@ -1,4 +1,5 @@
 import initDisplayStyleValues from '.';
 
 // Init
-document.addEventListener('DOMContentLoaded', () => initDisplayStyleValues());
+window.Webflow = window.Webflow || [];
+window.Webflow.push(initDisplayStyleValues);
