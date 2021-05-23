@@ -1,8 +1,9 @@
 {
   "name": "@finsweet/webflow-addons",
-  "version": "2.0.1",
+  "version": "2.2.0",
   "description": "No-code Power Attributes: Native feeling Webflow add-ons without code.",
   "main": "src/index.ts",
+  "type": "module",
   "scripts": {
     "build": "node .\\bin\\build.js"
   },
@@ -27,6 +28,7 @@
   },
   "homepage": "https://github.com/finsweet/webflow-hacks#readme",
   "dependencies": {
+    "@finsweet/ts-utils": "^0.6.1",
     "body-scroll-lock": "^3.1.5",
     "clipboard": "^2.0.8",
     "lodash-es": "^4.17.21"
