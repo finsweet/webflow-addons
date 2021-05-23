@@ -1,4 +1,4 @@
-import { cloneNode } from '../utils/helpers';
+import { cloneNode } from '@finsweet/ts-utils';
 
 /**
  * Infinite looping Webflow sliders

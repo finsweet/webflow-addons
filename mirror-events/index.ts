@@ -1,4 +1,4 @@
-import { isFormField } from '../utils/type-guards';
+import { isFormField } from '@finsweet/ts-utils';
 
 // Constants
 const CLICK_ATTRIBUTE = 'fs-mirror-click';

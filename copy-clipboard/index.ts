@@ -1,4 +1,4 @@
-import { findTextNode } from '../utils/helpers';
+import { findTextNode } from '@finsweet/ts-utils';
 import ClipboardJS from 'clipboard';
 
 const ATTRIBUTES = {
@@ -56,6 +56,8 @@ function initCopyClipboard({
   const copyTriggers = document.querySelectorAll(`[${ATTRIBUTES.Main}]${globalSelector ? `, ${globalSelector}` : ''}`);
 
   for (const trigger of copyTriggers) {
+    if (!(trigger instanceof HTMLElement)) continue;
+
     const targetValue = trigger.getAttribute(ATTRIBUTES.Main);
 
     // Get the message that should be set on the trigger after copying
