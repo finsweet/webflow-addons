@@ -1,18 +1,51 @@
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { findFirstScrollableElement } from './helpers';
-import { isVisible } from '../utils/helpers';
+import { handleDisplayTriggers } from './display';
+import { handleClickTriggers } from './click';
 
 // Constants
-const ATTRIBUTES = {
+export const ATTRIBUTES = {
   Main: 'fs-disable-scroll',
   PreserveScrollTarget: 'fs-preserve-scroll',
-  ReserveScrollBarGap: 'fs-preserve-gap',
+  MatchMedia: 'fs-match-media',
+  PreserveScrollBarGap: 'fs-preserve-gap',
 } as const;
+
+export const VALUES = {
+  Click: 'click',
+  Display: 'display',
+  Navbar: 'nav',
+} as const;
+
+const PARAMS = {
+  PreserveScrollBarGap: true,
+};
+
+// Stores
+export const STATES = {
+  ScrollingDisabled: false,
+};
 
 // Types
 interface GlobalParams {
-  reserveScrollBarGap?: boolean;
+  preserveScrollBarGap?: boolean;
 }
+
+/**
+ * Disable the scrolling
+ * @param target Target that will preserve scrolling
+ */
+export const disableScrolling = (target: Element): void => {
+  disableBodyScroll(target, { reserveScrollBarGap: PARAMS.PreserveScrollBarGap });
+  STATES.ScrollingDisabled = true;
+};
+
+/**
+ * Enable scrolling
+ */
+export const enableScrolling = (): void => {
+  clearAllBodyScrollLocks();
+  STATES.ScrollingDisabled = false;
+};
 
 /**
  * Disable scrolling.
@@ -29,95 +62,19 @@ function initDisableScrolling({
   currentScript?: HTMLOrSVGScriptElement | null;
   globalParams?: GlobalParams;
 }): void {
-  // Variables
-  let scrollingDisabled = false;
-  let reserveScrollBarGap = true;
-
   // Get the user's preferences
   if (currentScript) {
-    const reserveScrollGapAttribute = currentScript.getAttribute(ATTRIBUTES.ReserveScrollBarGap);
-    if (reserveScrollGapAttribute) reserveScrollBarGap = reserveScrollGapAttribute === 'true';
-  } else if (globalParams && globalParams.reserveScrollBarGap) {
-    reserveScrollBarGap = globalParams.reserveScrollBarGap;
+    const preserveScrollGapAttribute = currentScript.getAttribute(ATTRIBUTES.PreserveScrollBarGap);
+    if (preserveScrollGapAttribute) PARAMS.PreserveScrollBarGap = preserveScrollGapAttribute === 'true';
+  } else if (globalParams && typeof globalParams.preserveScrollBarGap === 'boolean') {
+    PARAMS.PreserveScrollBarGap = globalParams.preserveScrollBarGap;
   }
 
-  // ########## Actions ##########
-  const disableScrolling = (trigger: Element) => {
-    disableBodyScroll(trigger, { reserveScrollBarGap });
-    scrollingDisabled = true;
-  };
+  // Click triggers
+  handleClickTriggers();
 
-  const enableScrolling = () => {
-    clearAllBodyScrollLocks();
-    scrollingDisabled = false;
-  };
-
-  // ########## Click triggers ##########
-  // Dom Elements
-  const clickTriggers = document.querySelectorAll<HTMLElement>(`[${ATTRIBUTES.Main}="click"]`);
-
-  // Init click triggers
-  clickTriggers.forEach((trigger) => {
-    const preserveScrollSelector = trigger.getAttribute(ATTRIBUTES.PreserveScrollTarget);
-
-    let preserveScrollTarget: Element;
-    if (preserveScrollSelector) preserveScrollTarget = document.querySelector(preserveScrollSelector) || trigger;
-    else preserveScrollTarget = trigger;
-
-    trigger.addEventListener('click', () => {
-      if (scrollingDisabled) enableScrolling();
-      else disableScrolling(preserveScrollTarget);
-    });
-  });
-
-  // ########## Display triggers ##########
-  // DOM Elements
-  const displayTriggers = document.querySelectorAll<HTMLElement>(`[${ATTRIBUTES.Main}="display"]`);
-
-  // Stores
-  const visibleStates: Map<HTMLElement, boolean> = new Map();
-  const displayPreserveScrollTargets: Map<HTMLElement, Element> = new Map();
-
-  // Store the first scrollable element inside each trigger
-  displayTriggers.forEach((trigger) => {
-    const preserveScrollTarget = findFirstScrollableElement(trigger) || trigger;
-    displayPreserveScrollTargets.set(trigger, preserveScrollTarget);
-  });
-
-  // Define MutationObserver's callback
-  const callback: MutationCallback = (mutations) => {
-    const target = mutations[0].target as HTMLElement;
-    const visible = isVisible(target);
-    const wasVisibleBefore = visibleStates.get(target);
-
-    if (wasVisibleBefore === undefined || visible === wasVisibleBefore) return;
-
-    const preserveScrollTarget = displayPreserveScrollTargets.get(target) || target;
-
-    if (visible && !wasVisibleBefore) disableScrolling(preserveScrollTarget);
-    else if (!visible && wasVisibleBefore) enableScrolling();
-
-    visibleStates.set(target, visible);
-  };
-
-  // Create MutationObserver
-  const config: MutationObserverInit = {
-    attributes: true,
-    attributeFilter: ['style', 'class'],
-  };
-  const observer = new MutationObserver(callback);
-
-  displayTriggers.forEach((trigger) => {
-    // Check if the element is visible
-    const visible = isVisible(trigger);
-    if (visible) disableScrolling(trigger);
-
-    // Store current state
-    visibleStates.set(trigger, visible);
-
-    // Observe the element
-    observer.observe(trigger, config);
-  });
+  // Display triggers
+  handleDisplayTriggers();
 }
 
 // Export

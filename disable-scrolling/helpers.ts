@@ -1,4 +1,4 @@
-import { isScrollable } from '../utils/helpers';
+import { isScrollable } from '@finsweet/ts-utils';
 
 /**
  * Finds the first scrollable child of an element
