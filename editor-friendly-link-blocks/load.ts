@@ -2,4 +2,6 @@ import initEditorFriendlyLinkBlocks from '.';
 
 // Init
 const { currentScript } = document;
-document.addEventListener('DOMContentLoaded', () => initEditorFriendlyLinkBlocks({ currentScript }));
+
+window.Webflow = window.Webflow || [];
+window.Webflow.push(() => initEditorFriendlyLinkBlocks({ currentScript }));
