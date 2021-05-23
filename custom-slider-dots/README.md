@@ -3,7 +3,7 @@
 Populate the native slider dots with any custom content.
 
 ```html
-<script defer src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/custom-slider-dots.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/@finsweet/webflow-addons@2/dist/custom-slider-dots.js"></script>
 ```
 
 ## Element attributes
