@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
-    "build": "node .\\bin\\build.js"
+    "build": "node ./bin/build.js"
   },
   "repository": {
     "type": "git",
