@@ -35,11 +35,7 @@ function initInfiniteSliders({
         const previousSlideIndex = totalSlides.findIndex((slide) => slide === currentSlide) - 1;
 
         if (previousSlideIndex >= 0) {
-          // eslint-disable-next-line no-console
-          console.log('Its cloning: ' + previousSlideIndex);
           const newSlide = cloneNode(slides[previousSlideIndex + 1]);
-          // eslint-disable-next-line no-console
-          console.log('Its innercontent: ' + newSlide.textContent);
 
           newSlide.style.transform = '';
           mask.appendChild(newSlide);
@@ -47,9 +43,6 @@ function initInfiniteSliders({
           const slidesToTransform = [...slides].slice(originalSlidesLength);
           slidesToTransform.forEach((slide) => {
             slide.style.transform = currentSlide.style.transform;
-
-            // eslint-disable-next-line no-console
-            console.log('It transformed thru: ' + currentSlide.style.transform);
           });
         } else {
           totalSlides.slice(originalSlidesLength).forEach((slide) => slide.remove());
