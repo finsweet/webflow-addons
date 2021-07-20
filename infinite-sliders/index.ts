@@ -16,40 +16,65 @@ function initInfiniteSliders({
 }): void {
   const selector = querySelector || currentScript?.getAttribute('fs-selector') || '.w-slider';
   const sliders = document.querySelectorAll<HTMLDivElement>(selector);
+  // eslint-disable-next-line no-console
+  sliders.forEach((slider) => {
+    let currentActiveSlide = 0;
 
-  for (const slider of sliders) {
-    const mask = slider.querySelector('.w-slider-mask');
-    if (!(mask instanceof HTMLDivElement) || mask.clientWidth === slider.clientWidth) continue;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const sliderMask = slider.querySelector('.w-slider-mask')!;
 
-    const slides = slider.getElementsByClassName('w-slide') as HTMLCollectionOf<HTMLDivElement>;
-    const originalSlidesLength = slides.length;
+    const originalSlidesInSlider = slider.querySelectorAll<HTMLDivElement>('.w-slide');
+    // get the count for all slides in the current slider
+    const totalSlideCount = originalSlidesInSlider.length;
 
-    // If no slides or there isn't at least one non-visible slide, return.
-    if (!originalSlidesLength || originalSlidesLength <= Math.floor(slider.clientWidth / mask.clientWidth)) continue;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const rightSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-right')!;
 
-    [...slides].forEach((currentSlide) =>
-      currentSlide.addEventListener('transitionstart', () => {
-        if (currentSlide.getAttribute('aria-hidden')) return;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const leftSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-left')!;
 
-        const totalSlides = [...slides];
-        const previousSlideIndex = totalSlides.findIndex((slide) => slide === currentSlide) - 1;
+    // track the current active slide
+    rightSlideBtn.addEventListener('click', () => {
+      currentActiveSlide = currentActiveSlide + 1;
 
-        if (previousSlideIndex >= 0) {
-          const newSlide = cloneNode(slides[previousSlideIndex + 1]);
+      const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
 
-          newSlide.style.transform = '';
-          mask.appendChild(newSlide);
+      // the slider count should go back to one, it exceeds present slides
+      if (currentActiveSlide > totalSlideCount) {
+        currentActiveSlide = 1;
+        // remove clones, they are of no use in this iteration and exit function
+        sliderContents.forEach((slideInSlider) => {
+          if (slideInSlider.getAttribute('fs-appended-slide-element')) {
+            slideInSlider.remove();
+          }
+        });
+        return 0;
+      }
+      // duplicate the node that just went out of view and append it
+      const newSlideToAppend = cloneNode(originalSlidesInSlider[currentActiveSlide - 1]);
 
-          const slidesToTransform = [...slides].slice(originalSlidesLength);
-          slidesToTransform.forEach((slide) => {
-            slide.style.transform = currentSlide.style.transform;
-          });
-        } else {
-          totalSlides.slice(originalSlidesLength).forEach((slide) => slide.remove());
+      newSlideToAppend.style.transform = originalSlidesInSlider[currentActiveSlide - 1].style.transform;
+
+      newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
+
+      sliderMask.appendChild(newSlideToAppend);
+
+      // transform clones
+      sliderContents.forEach((slideInSlider) => {
+        if (slideInSlider.getAttribute('fs-appended-slide-element')) {
+          slideInSlider.style.transform = 'translateX(-' + sliderMask.clientWidth * currentActiveSlide + 'px)';
         }
-      })
-    );
-  }
+      });
+    });
+
+    leftSlideBtn.addEventListener('click', () => {
+      currentActiveSlide = currentActiveSlide - 1;
+      // eslint-disable-next-line no-console
+      if (currentActiveSlide < 1) {
+        currentActiveSlide = 5;
+      }
+    });
+  });
 }
 
 // Export
