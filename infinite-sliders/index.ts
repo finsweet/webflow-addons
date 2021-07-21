@@ -36,9 +36,10 @@ function initInfiniteSliders({
 
       const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
 
-      // the slider count should go back to one, it exceeds present slides
-      if (currentActiveSlide > totalSlideCount) {
-        currentActiveSlide = 1;
+      // the slider count should go back to zero, it exceeds amount of present slides
+      // should be as initial time
+      if (currentActiveSlide === totalSlideCount) {
+        currentActiveSlide = 0;
         // remove clones, they are of no use in this iteration and exit function
         sliderContents.forEach((slideInSlider) => {
           if (slideInSlider.getAttribute('fs-appended-slide-element')) {
@@ -50,7 +51,8 @@ function initInfiniteSliders({
       // duplicate the node that just went out of view and append it
       const newSlideToAppend = cloneNode(originalSlidesInSlider[currentActiveSlide - 1]);
 
-      newSlideToAppend.style.transform = originalSlidesInSlider[currentActiveSlide - 1].style.transform;
+      const transformValue = sliderMask.clientWidth * currentActiveSlide;
+      newSlideToAppend.style.transform = 'translateX(-' + transformValue + 'px)';
 
       newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
 
