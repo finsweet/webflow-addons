@@ -68,10 +68,38 @@ function initInfiniteSliders({
 
     leftSlideBtn.addEventListener('click', () => {
       currentActiveSlide = currentActiveSlide - 1;
-      // eslint-disable-next-line no-console
+
       if (currentActiveSlide < 1) {
-        currentActiveSlide = 5;
+        currentActiveSlide = totalSlideCount;
+        // eslint-disable-next-line no-console
+        console.log(currentActiveSlide);
+        let duplicateNodesNumber = 1;
+        // its at the last slide, clone the rest and append them in a way
+        // that matches just before you revert to first slide in moving forwards
+        while (duplicateNodesNumber < currentActiveSlide) {
+          const newSlideToAppend = cloneNode(originalSlidesInSlider[duplicateNodesNumber - 1]);
+          const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
+
+          newSlideToAppend.style.transform = 'translateX(-0px)';
+
+          newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
+
+          sliderMask.appendChild(newSlideToAppend);
+
+          newSlideToAppend.style.transform = 'translateX(-' + transformValue + 'px)';
+
+          duplicateNodesNumber = duplicateNodesNumber + 1;
+        }
+        return 0;
       }
+      const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
+      sliderContents.forEach((slideInSlider) => {
+        if (slideInSlider.getAttribute('fs-appended-slide-element')) {
+          const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
+
+          slideInSlider.style.transform = 'translateX(-' + transformValue + 'px)';
+        }
+      });
     });
   });
 }
