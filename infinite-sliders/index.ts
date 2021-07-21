@@ -20,18 +20,15 @@ function initInfiniteSliders({
   sliders.forEach((slider) => {
     let currentActiveSlide = 0;
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const sliderMask = slider.querySelector('.w-slider-mask')!;
+    const sliderMask = slider.querySelector('.w-slider-mask') as HTMLDivElement;
 
     const originalSlidesInSlider = slider.querySelectorAll<HTMLDivElement>('.w-slide');
     // get the count for all slides in the current slider
     const totalSlideCount = originalSlidesInSlider.length;
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const rightSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-right')!;
+    const rightSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-right') as HTMLButtonElement;
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const leftSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-left')!;
+    const leftSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-left') as HTMLButtonElement;
 
     // track the current active slide
     rightSlideBtn.addEventListener('click', () => {
