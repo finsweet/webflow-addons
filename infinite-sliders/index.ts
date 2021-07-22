@@ -30,6 +30,44 @@ function initInfiniteSliders({
 
     const leftSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-left') as HTMLButtonElement;
 
+    const sliderDots = slider.querySelectorAll<HTMLDivElement>('.w-slider-dot');
+
+    // put an event listener on each of the dots to figure out
+    // how many we will be appending on press
+    sliderDots.forEach((singleSliderDot, sliderDotIndex) => {
+      const sliderDotNumber = sliderDotIndex + 1;
+      singleSliderDot.addEventListener('click', () => {
+        currentActiveSlide = sliderDotNumber;
+
+        // remove any items appended before
+        const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+        appendedSlides.forEach((singleAppendedSlide) => {
+          singleAppendedSlide.remove();
+        });
+
+        const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
+        // create new nodes to append and transform them
+        let numberOfNodesToDuplicate = 0;
+        while (numberOfNodesToDuplicate < sliderDotIndex) {
+          const newSlideToAppend = cloneNode(originalSlidesInSlider[numberOfNodesToDuplicate]);
+
+          newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
+
+          sliderMask.appendChild(newSlideToAppend);
+
+          numberOfNodesToDuplicate = numberOfNodesToDuplicate + 1;
+        }
+        // get all appended nodes that are present
+        const newAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+        // for every appended slide transform them
+        newAppendedSlides.forEach((singleAppendedSlide) => {
+          singleAppendedSlide.style.transform = 'translateX(-' + transformValue + 'px)';
+        });
+      });
+    });
+
     // track the current active slide
     rightSlideBtn.addEventListener('click', () => {
       currentActiveSlide = currentActiveSlide + 1;
@@ -44,6 +82,7 @@ function initInfiniteSliders({
         appendedSlides.forEach((singleAppendedSlide) => {
           singleAppendedSlide.remove();
         });
+
         return 0;
       }
       // slide to append will always be a step below in the case of going forwards
