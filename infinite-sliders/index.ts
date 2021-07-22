@@ -32,41 +32,38 @@ function initInfiniteSliders({
 
     // track the current active slide
     rightSlideBtn.addEventListener('click', () => {
-      const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
-      sliderContents.forEach((slideInSlider) => {
-        if (slideInSlider.getAttribute('fs-appended-slide-element')) {
-          slideInSlider.remove();
-        }
-      });
       currentActiveSlide = currentActiveSlide + 1;
 
-      // the slider count should go back to zero, it exceeds amount of present slides
-      // should be as initial time
+      // in the case we've reached the last slide, reset the counter and remove all
+      // appended nodes and exit the function
       if (currentActiveSlide === totalSlideCount) {
         currentActiveSlide = 0;
-        // remove clones, they are of no use in this iteration and exit function
-        sliderContents.forEach((slideInSlider) => {
-          if (slideInSlider.getAttribute('fs-appended-slide-element')) {
-            slideInSlider.remove();
-          }
+
+        const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+        appendedSlides.forEach((singleAppendedSlide) => {
+          singleAppendedSlide.remove();
         });
         return 0;
       }
-      // duplicate the node that just went out of view and append it
+      // slide to append will always be a step below in the case of going forwards
+      // i.e the one moved out of view
       const newSlideToAppend = cloneNode(originalSlidesInSlider[currentActiveSlide - 1]);
-
-      const transformValue = sliderMask.clientWidth * currentActiveSlide;
-      newSlideToAppend.style.transform = 'translateX(-' + transformValue + 'px)';
 
       newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
 
       sliderMask.appendChild(newSlideToAppend);
 
-      // transform clones
-      sliderContents.forEach((slideInSlider) => {
-        if (slideInSlider.getAttribute('fs-appended-slide-element')) {
-          slideInSlider.style.transform = 'translateX(-' + sliderMask.clientWidth * currentActiveSlide + 'px)';
-        }
+      // this is value by which to move the appended slides so it appears just next to
+      // the last slide
+      const transformValue = sliderMask.clientWidth * currentActiveSlide;
+
+      // get all appended nodes that are present
+      const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+      // for every appended slide transform them
+      appendedSlides.forEach((singleAppendedSlide) => {
+        singleAppendedSlide.style.transform = 'translateX(-' + transformValue + 'px)';
       });
     });
 
