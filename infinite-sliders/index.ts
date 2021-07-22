@@ -32,9 +32,13 @@ function initInfiniteSliders({
 
     // track the current active slide
     rightSlideBtn.addEventListener('click', () => {
-      currentActiveSlide = currentActiveSlide + 1;
-
       const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
+      sliderContents.forEach((slideInSlider) => {
+        if (slideInSlider.getAttribute('fs-appended-slide-element')) {
+          slideInSlider.remove();
+        }
+      });
+      currentActiveSlide = currentActiveSlide + 1;
 
       // the slider count should go back to zero, it exceeds amount of present slides
       // should be as initial time
@@ -69,18 +73,29 @@ function initInfiniteSliders({
     leftSlideBtn.addEventListener('click', () => {
       currentActiveSlide = currentActiveSlide - 1;
 
+      // the slider has reached its last point, remove any node that has been
+      // appended before and append new ones
+      const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
+
+      if (currentActiveSlide === totalSlideCount - 1) {
+        sliderContents.forEach((slideInSlider, slideIndex) => {
+          if (slideInSlider.getAttribute('fs-appended-slide-element')) {
+            if (slideIndex > totalSlideCount) {
+              slideInSlider.remove();
+            }
+          }
+        });
+      }
+
       if (currentActiveSlide < 1) {
         currentActiveSlide = totalSlideCount;
-        // eslint-disable-next-line no-console
-        console.log(currentActiveSlide);
+
         let duplicateNodesNumber = 1;
         // its at the last slide, clone the rest and append them in a way
         // that matches just before you revert to first slide in moving forwards
         while (duplicateNodesNumber < currentActiveSlide) {
           const newSlideToAppend = cloneNode(originalSlidesInSlider[duplicateNodesNumber - 1]);
           const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
-
-          newSlideToAppend.style.transform = 'translateX(-0px)';
 
           newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
 
@@ -92,9 +107,18 @@ function initInfiniteSliders({
         }
         return 0;
       }
-      const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
-      sliderContents.forEach((slideInSlider) => {
+
+      sliderContents.forEach((slideInSlider, slideIndex) => {
         if (slideInSlider.getAttribute('fs-appended-slide-element')) {
+          // remove duplicates except the duplicate before the last one
+          if (slideIndex > totalSlideCount + 1) {
+            slideInSlider.remove();
+          }
+          // if its two steps past the last slide remove the appended one that was not
+          // removed before
+          if (currentActiveSlide < totalSlideCount - 2) {
+            slideInSlider.remove();
+          }
           const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
 
           slideInSlider.style.transform = 'translateX(-' + transformValue + 'px)';
