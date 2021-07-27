@@ -37,34 +37,36 @@ function initInfiniteSliders({
     sliderDots.forEach((singleSliderDot, sliderDotIndex) => {
       const sliderDotNumber = sliderDotIndex + 1;
       singleSliderDot.addEventListener('click', () => {
-        currentActiveSlide = sliderDotNumber;
-
-        // remove any items appended before
         const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
 
-        appendedSlides.forEach((singleAppendedSlide) => {
-          singleAppendedSlide.remove();
+        appendedSlides.forEach((appendedSlide) => {
+          appendedSlide.remove();
         });
+        let previousSlide;
+        if (currentActiveSlide === 0) {
+          previousSlide = 1;
+        } else {
+          previousSlide = currentActiveSlide;
+        }
 
-        const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
+        currentActiveSlide = sliderDotNumber;
+
         // create new nodes to append and transform them
-        let numberOfNodesToDuplicate = 0;
-        while (numberOfNodesToDuplicate < sliderDotIndex) {
-          const newSlideToAppend = cloneNode(originalSlidesInSlider[numberOfNodesToDuplicate]);
+
+        let numberOfNodesToDuplicate = currentActiveSlide - previousSlide;
+
+        const transformValue = sliderMask.clientWidth * numberOfNodesToDuplicate;
+        while (numberOfNodesToDuplicate > 0) {
+          const newSlideToAppend = cloneNode(originalSlidesInSlider[currentActiveSlide - numberOfNodesToDuplicate - 1]);
 
           newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
 
           sliderMask.appendChild(newSlideToAppend);
 
-          numberOfNodesToDuplicate = numberOfNodesToDuplicate + 1;
-        }
-        // get all appended nodes that are present
-        const newAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+          newSlideToAppend.style.transform = 'translateX(-' + transformValue + 'px)';
 
-        // for every appended slide transform them
-        newAppendedSlides.forEach((singleAppendedSlide) => {
-          singleAppendedSlide.style.transform = 'translateX(-' + transformValue + 'px)';
-        });
+          numberOfNodesToDuplicate = numberOfNodesToDuplicate - 1;
+        }
       });
     });
 
