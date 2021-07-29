@@ -66,7 +66,7 @@ function initInfiniteSliders({
 
         // for every appended slide transform them
         newAppendedSlides.forEach((singleAppendedSlide) => {
-          singleAppendedSlide.style.transform = 'translateX(-' + transformValue + 'px)';
+          singleAppendedSlide.style.transform = `translateX(-${transformValue}px)`;
         });
       });
     });
@@ -105,7 +105,7 @@ function initInfiniteSliders({
 
       // for every appended slide transform them
       appendedSlides.forEach((singleAppendedSlide) => {
-        singleAppendedSlide.style.transform = 'translateX(-' + transformValue + 'px)';
+        singleAppendedSlide.style.transform = `translateX(-${transformValue}px)`;
       });
     });
 
@@ -140,7 +140,7 @@ function initInfiniteSliders({
 
           sliderMask.appendChild(newSlideToAppend);
 
-          newSlideToAppend.style.transform = 'translateX(-' + transformValue + 'px)';
+          newSlideToAppend.style.transform = `translateX(-${transformValue}px)`;
 
           duplicateNodesNumber = duplicateNodesNumber + 1;
         }
@@ -160,7 +160,7 @@ function initInfiniteSliders({
           }
           const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
 
-          slideInSlider.style.transform = 'translateX(-' + transformValue + 'px)';
+          slideInSlider.style.transform = `translateX(-${transformValue}px)`;
         }
       });
     });
