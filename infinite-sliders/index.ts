@@ -16,43 +16,33 @@ function initInfiniteSliders({
 }): void {
   const selector = querySelector || currentScript?.getAttribute('fs-selector') || '.w-slider';
   const sliders = document.querySelectorAll<HTMLDivElement>(selector);
-  // eslint-disable-next-line no-console
-  sliders.forEach((slider) => {
-    let currentActiveSlide = 0;
 
+  sliders.forEach((slider) => {
     const sliderMask = slider.querySelector('.w-slider-mask') as HTMLDivElement;
 
     const originalSlidesInSlider = slider.querySelectorAll<HTMLDivElement>('.w-slide');
-    // get the count for all slides in the current slider
-    const totalSlideCount = originalSlidesInSlider.length;
 
-    const rightSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-right') as HTMLButtonElement;
+    // config options for the mutation observer
 
-    const leftSlideBtn = slider.querySelector<HTMLButtonElement>('.w-slider-arrow-left') as HTMLButtonElement;
+    const mutationObserverConfig = { attributes: true, attributesFilter: ['class'] };
 
-    const sliderDots = slider.querySelectorAll<HTMLDivElement>('.w-slider-dot');
+    const mutationObserver = new MutationObserver((mutationList) => {
+      const mutationTarget = mutationList[0].target as HTMLDivElement;
 
-    // put an event listener on each of the dots to figure out
-    // how many we will be appending on press
-    sliderDots.forEach((singleSliderDot, sliderDotIndex) => {
-      const sliderDotNumber = sliderDotIndex + 1;
-      singleSliderDot.addEventListener('click', () => {
-        const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+      const currentActiveSlide = parseInt(mutationTarget.getAttribute('aria-label')?.charAt(11));
 
-        appendedSlides.forEach((appendedSlide) => {
-          appendedSlide.remove();
+      if (currentActiveSlide > 1) {
+        // get all appended nodes that are present
+        const presentAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+        presentAppendedSlides.forEach((presentAppendedSlide) => {
+          presentAppendedSlide.remove();
         });
 
-        currentActiveSlide = sliderDotNumber;
-
-        // create new nodes to append and transform them
-
-        const numberOfNodesToDuplicate = currentActiveSlide - 1;
-
-        const transformValue = sliderMask.clientWidth * numberOfNodesToDuplicate;
+        const transformValue = sliderMask.clientWidth * currentActiveSlide;
 
         let nodesDuplicatedCount = 0;
-        while (nodesDuplicatedCount < numberOfNodesToDuplicate) {
+        while (nodesDuplicatedCount < currentActiveSlide) {
           const newSlideToAppend = cloneNode(originalSlidesInSlider[nodesDuplicatedCount]);
 
           newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
@@ -68,101 +58,15 @@ function initInfiniteSliders({
         newAppendedSlides.forEach((singleAppendedSlide) => {
           singleAppendedSlide.style.transform = `translateX(-${transformValue}px)`;
         });
-      });
+      }
+
+      return 0;
     });
 
-    // track the current active slide
-    rightSlideBtn.addEventListener('click', () => {
-      currentActiveSlide = currentActiveSlide + 1;
+    const sliderDots = slider.querySelectorAll<HTMLDivElement>('.w-slider-dot');
 
-      // in the case we've reached the last slide, reset the counter and remove all
-      // appended nodes and exit the function
-      if (currentActiveSlide === totalSlideCount) {
-        currentActiveSlide = 0;
-
-        const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
-
-        appendedSlides.forEach((singleAppendedSlide) => {
-          singleAppendedSlide.remove();
-        });
-
-        return 0;
-      }
-      // slide to append will always be a step below in the case of going forwards
-      // i.e the one moved out of view
-      const newSlideToAppend = cloneNode(originalSlidesInSlider[currentActiveSlide - 1]);
-
-      newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
-
-      sliderMask.appendChild(newSlideToAppend);
-
-      // this is value by which to move the appended slides so it appears just next to
-      // the last slide
-      const transformValue = sliderMask.clientWidth * currentActiveSlide;
-
-      // get all appended nodes that are present
-      const appendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
-
-      // for every appended slide transform them
-      appendedSlides.forEach((singleAppendedSlide) => {
-        singleAppendedSlide.style.transform = `translateX(-${transformValue}px)`;
-      });
-    });
-
-    leftSlideBtn.addEventListener('click', () => {
-      currentActiveSlide = currentActiveSlide - 1;
-
-      // the slider has reached its last point, remove any node that has been
-      // appended before and append new ones
-      const sliderContents = slider.querySelectorAll<HTMLDivElement>('.w-slide');
-
-      if (currentActiveSlide === totalSlideCount - 1) {
-        sliderContents.forEach((slideInSlider, slideIndex) => {
-          if (slideInSlider.getAttribute('fs-appended-slide-element')) {
-            if (slideIndex > totalSlideCount) {
-              slideInSlider.remove();
-            }
-          }
-        });
-      }
-
-      if (currentActiveSlide < 1) {
-        currentActiveSlide = totalSlideCount;
-
-        let duplicateNodesNumber = 1;
-        // its at the last slide, clone the rest and append them in a way
-        // that matches just before you revert to first slide in moving forwards
-        while (duplicateNodesNumber < currentActiveSlide) {
-          const newSlideToAppend = cloneNode(originalSlidesInSlider[duplicateNodesNumber - 1]);
-          const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
-
-          newSlideToAppend.setAttribute('fs-appended-slide-element', 'true');
-
-          sliderMask.appendChild(newSlideToAppend);
-
-          newSlideToAppend.style.transform = `translateX(-${transformValue}px)`;
-
-          duplicateNodesNumber = duplicateNodesNumber + 1;
-        }
-        return 0;
-      }
-
-      sliderContents.forEach((slideInSlider, slideIndex) => {
-        if (slideInSlider.getAttribute('fs-appended-slide-element')) {
-          // remove duplicates except the duplicate before the last one
-          if (slideIndex > totalSlideCount + 1) {
-            slideInSlider.remove();
-          }
-          // if its two steps past the last slide remove the appended one that was not
-          // removed before
-          if (currentActiveSlide < totalSlideCount - 2) {
-            slideInSlider.remove();
-          }
-          const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
-
-          slideInSlider.style.transform = `translateX(-${transformValue}px)`;
-        }
-      });
+    sliderDots.forEach((sliderDot) => {
+      mutationObserver.observe(sliderDot, mutationObserverConfig);
     });
   });
 }
