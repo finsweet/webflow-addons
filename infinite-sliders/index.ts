@@ -27,20 +27,20 @@ function initInfiniteSliders({
     const mutationObserverConfig = { attributes: true, attributesFilter: ['class'] };
 
     const mutationObserver = new MutationObserver((mutationList) => {
+      // get all appended nodes that are present
+      const presentAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+      presentAppendedSlides.forEach((presentAppendedSlide) => {
+        presentAppendedSlide.remove();
+      });
       const mutationTarget = mutationList[0].target as HTMLDivElement;
 
-      const currentActiveSlide = parseInt(mutationTarget.getAttribute('aria-label')?.charAt(11));
+      const ariaLabel = mutationTarget.getAttribute('aria-label');
+      if (!ariaLabel) return;
+
+      const currentActiveSlide = parseInt(ariaLabel.charAt(11));
 
       if (currentActiveSlide > 1) {
-        // get all appended nodes that are present
-        const presentAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
-
-        presentAppendedSlides.forEach((presentAppendedSlide) => {
-          presentAppendedSlide.remove();
-        });
-
-        const transformValue = sliderMask.clientWidth * currentActiveSlide;
-
         let nodesDuplicatedCount = 0;
         while (nodesDuplicatedCount < currentActiveSlide) {
           const newSlideToAppend = cloneNode(originalSlidesInSlider[nodesDuplicatedCount]);
@@ -51,15 +51,16 @@ function initInfiniteSliders({
 
           nodesDuplicatedCount = nodesDuplicatedCount + 1;
         }
-        // get all appended nodes that are present
-        const newAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
-
-        // for every appended slide transform them
-        newAppendedSlides.forEach((singleAppendedSlide) => {
-          singleAppendedSlide.style.transform = `translateX(-${transformValue}px)`;
-        });
       }
+      const transformValue = sliderMask.clientWidth * (currentActiveSlide - 1);
 
+      // get all appended nodes that are present
+      const newAppendedSlides = slider.querySelectorAll<HTMLDivElement>('[fs-appended-slide-element = "true"]');
+
+      // for every appended slide transform them
+      newAppendedSlides.forEach((singleAppendedSlide) => {
+        singleAppendedSlide.style.transform = `translateX(-${transformValue}px)`;
+      });
       return 0;
     });
 
